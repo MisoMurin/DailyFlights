@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<navigation
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	app:startDestination="@id/flights_fragment">
+
+	<fragment
+		android:id="@+id/flights_fragment"
+		android:name="com.murin.dailyflights.ui.list.FlightsListFragment"
+		android:label="@string/flights_title"
+		tools:layout="@layout/fragment_flights_list">
+	</fragment>
+</navigation>
