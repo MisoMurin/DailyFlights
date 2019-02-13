@@ -31,17 +31,21 @@ class FlightsListFragment : Fragment() {
         val factory = Provider.provideFlightsListViewModelFactory()
         viewModel = ViewModelProviders.of(this, factory).get(FlightsListViewModel::class.java)
 
+        val adapter = FlightsAdapter()
         binding.rvFlightsList.addItemDecoration(DividerItemDecoration(context, VERTICAL))
-        subscribeUi()
+        binding.rvFlightsList.adapter = adapter
+        subscribeUi(adapter)
 
         setHasOptionsMenu(true)
         return binding.root
     }
 
-    private fun subscribeUi() {
+    private fun subscribeUi(adapter: FlightsAdapter) {
         viewModel.flights.observe(viewLifecycleOwner, Observer { fights ->
-            println("mmdebug: ${fights?.size ?: 0}")
-
+            val flightsCount = fights?.size ?: 0
+            if (flightsCount > 0) {
+                adapter.submitList(fights)
+            }
         })
 
         viewModel.fetchStatus.observe(viewLifecycleOwner, Observer { status ->
