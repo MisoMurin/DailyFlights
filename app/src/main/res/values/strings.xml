@@ -1,3 +1,7 @@
 <resources>
     <string name="flights_title">Daily Flights</string>
+    <string name="fetch_error">Fetching the flights has failed.</string>
+    <string name="fetching">Fetching flights from API.</string>
+    <string name="offline">App is offline - can\'t fetch.</string>
+    <string name="unknown_state">Unknown state</string>
 </resources>

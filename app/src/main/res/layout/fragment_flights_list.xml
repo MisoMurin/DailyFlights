@@ -10,10 +10,15 @@
 		android:orientation="vertical"
 		android:animateLayoutChanges="true">
 
-		<TextView
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/rv_flights_list"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="Hello fragment!"/>
-
+			android:layout_height="match_parent"
+			android:clipToPadding="false"
+			android:paddingLeft="8dp"
+			android:paddingRight="8dp"
+			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+			tools:context="com.murin.dailyflights.FlightsActivity"
+			tools:listitem="@layout/item_flight" />
 	</LinearLayout>
 </layout>

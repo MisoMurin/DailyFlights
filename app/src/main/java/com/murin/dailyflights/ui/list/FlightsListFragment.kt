@@ -5,9 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
+import com.google.android.material.snackbar.Snackbar
+import com.murin.dailyflights.Provider
+import com.murin.dailyflights.R
+import com.murin.dailyflights.data.FlightsRepository.FetchStatus.*
 import com.murin.dailyflights.databinding.FragmentFlightsListBinding
 
 class FlightsListFragment : Fragment() {
+
+    private lateinit var viewModel: FlightsListViewModel
     private lateinit var binding: FragmentFlightsListBinding
 
     override fun onCreateView(
@@ -16,7 +26,34 @@ class FlightsListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFlightsListBinding.inflate(inflater, container, false)
+        val context = context ?: return binding.root
+
+        val factory = Provider.provideFlightsListViewModelFactory()
+        viewModel = ViewModelProviders.of(this, factory).get(FlightsListViewModel::class.java)
+
+        binding.rvFlightsList.addItemDecoration(DividerItemDecoration(context, VERTICAL))
+        subscribeUi()
+
+        setHasOptionsMenu(true)
         return binding.root
     }
 
+    private fun subscribeUi() {
+        viewModel.flights.observe(viewLifecycleOwner, Observer { fights ->
+            println("mmdebug: ${fights?.size ?: 0}")
+
+        })
+
+        viewModel.fetchStatus.observe(viewLifecycleOwner, Observer { status ->
+            when (status) {
+                SUCCESS -> {}
+                FAILURE -> snackbar(R.string.fetch_error)
+                FETCHING -> snackbar(R.string.fetching)
+                else -> snackbar(R.string.unknown_state)
+            }
+        })
+    }
+
+    private fun snackbar(messageId: Int) =
+        Snackbar.make(binding.rvFlightsList, messageId, Snackbar.LENGTH_LONG).show()
 }
