@@ -3,6 +3,9 @@ package com.murin.dailyflights.data
 import android.os.Parcel
 import android.os.Parcelable
 import com.squareup.moshi.Json
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZoneOffset
+import org.threeten.bp.format.DateTimeFormatter
 
 data class Flight(
     val id: String?,
@@ -82,6 +85,10 @@ data class Flight(
             return arrayOfNulls(size)
         }
     }
+
+    fun timeString(time: Long): String = DateTimeFormatter.ofPattern("dd.MM.YYYY, HH:mm").format(
+        LocalDateTime.ofEpochSecond(time, 0, ZoneOffset.UTC)
+    )
 
     data class Duration(
         val total: Int,

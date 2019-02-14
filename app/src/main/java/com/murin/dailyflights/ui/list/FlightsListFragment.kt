@@ -26,13 +26,11 @@ class FlightsListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFlightsListBinding.inflate(inflater, container, false)
-        val context = context ?: return binding.root
 
         val factory = Provider.provideFlightsListViewModelFactory()
         viewModel = ViewModelProviders.of(this, factory).get(FlightsListViewModel::class.java)
 
         val adapter = FlightsAdapter()
-        binding.rvFlightsList.addItemDecoration(DividerItemDecoration(context, VERTICAL))
         binding.rvFlightsList.adapter = adapter
         subscribeUi(adapter)
 

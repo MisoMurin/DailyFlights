@@ -18,13 +18,13 @@ class FlightsRepository private constructor() {
                 dateFrom = "18/02/2019",
                 dateTo = "25/02/2019",
                 limit = 10
-            ).await().let {
-                if (it.isSuccessful && it.body() != null) {
+            ).await().let { response ->
+                if (response.isSuccessful && response.body() != null) {
                     fetchStatus.postValue(FetchStatus.SUCCESS)
-                    flights.postValue(it.body()!!.data)
+                    flights.postValue(response.body()!!.data.sortedBy { it.quality })
                 } else {
                     fetchStatus.postValue(FetchStatus.FAILURE)
-                    Log.e("FLIGHTS_ERROR", "${it.code()}: ${it.message()}")
+                    Log.e("FLIGHTS_ERROR", "${response.code()}: ${response.message()}")
                 }
             }
         } catch (e: Exception) {

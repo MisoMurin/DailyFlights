@@ -8,6 +8,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.murin.dailyflights.databinding.ActivityFlightsBinding
 
 class FlightsActivity : AppCompatActivity() {
@@ -17,6 +18,8 @@ class FlightsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AndroidThreeTen.init(applicationContext)
+
         val binding: ActivityFlightsBinding = DataBindingUtil.setContentView(
             this,
             R.layout.activity_flights
