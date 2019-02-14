@@ -8,7 +8,7 @@
         <import
             type="android.view.View"/>
         <variable
-            name="clickListener"
+            name="kiwiClickListener"
             type="android.view.View.OnClickListener"/>
         <variable
             name="flight"
@@ -133,18 +133,6 @@
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/tv_flight_duration"/>
 
-        <com.mapbox.mapboxsdk.maps.MapView
-            android:id="@+id/mv_flight_map"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:mapbox_cameraTargetLat="49.234374"
-            app:mapbox_cameraTargetLng="16.567946"
-            app:mapbox_styleUrl="mapbox://styles/mapbox/streets-v11"
-            app:mapbox_cameraZoom="7"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_flight_duration"
-            app:layout_constraintBottom_toTopOf="@id/ll_show_in_kiwi"/>
-
         <LinearLayout
             android:id="@+id/ll_show_in_kiwi"
             android:layout_width="wrap_content"
@@ -153,16 +141,18 @@
             android:visibility="gone"
             android:foreground="?attr/selectableItemBackground"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_flight_duration"
             android:gravity="center"
-            android:layout_margin="8dp">
+            android:onClick="@{kiwiClickListener}">
 
             <ImageView
                 android:id="@+id/iv_show_in_kiwi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/show_in_kiwi"/>
+                android:contentDescription="@string/show_in_kiwi"
+                android:padding="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_flight_duration"/>
 
             <TextView
                 android:id="@+id/tv_show_in_kiwi"
@@ -174,5 +164,18 @@
                 android:text="@string/show_in_kiwi"/>
 
         </LinearLayout>
+
+        <com.mapbox.mapboxsdk.maps.MapView
+            android:id="@+id/mv_flight_map"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:mapbox_cameraTargetLat="49.234374"
+            app:mapbox_cameraTargetLng="16.567946"
+            app:mapbox_styleUrl="mapbox://styles/mapbox/streets-v11"
+            app:mapbox_cameraZoom="7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_show_in_kiwi"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

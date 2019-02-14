@@ -32,16 +32,15 @@ class FlightDetailFragment : Fragment() {
 
         with(binding) {
             flight = arguments?.getParcelable("flight")
+            kiwiClickListener = View.OnClickListener {
+                val kiwiIntent = Intent(Intent.ACTION_VIEW, Uri.parse(binding.flight?.deepLink ?: ""))
+                startActivity(kiwiIntent)
+            }
 
             activity?.packageManager?.let { pm ->
                 if (pm.getInstalledPackages(0).any { it.packageName == kiwiPackageName }) {
-
                     ivShowInKiwi.setImageDrawable(pm.getApplicationIcon(kiwiPackageName))
                     llShowInKiwi.visibility = VISIBLE
-                    llShowInKiwi.setOnClickListener {
-                        val kiwiIntent = Intent(Intent.ACTION_VIEW, Uri.parse(binding.flight?.deepLink ?: ""))
-                        startActivity(kiwiIntent)
-                    }
                 }
             }
 
