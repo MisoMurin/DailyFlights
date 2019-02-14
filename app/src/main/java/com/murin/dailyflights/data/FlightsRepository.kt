@@ -3,6 +3,8 @@ package com.murin.dailyflights.data
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.murin.dailyflights.data.network.RetrofitFactory
+import org.threeten.bp.LocalDate
+import org.threeten.bp.format.DateTimeFormatter
 
 class FlightsRepository private constructor() {
     val flights = MutableLiveData<List<Flight>>()
@@ -14,14 +16,13 @@ class FlightsRepository private constructor() {
 
             RetrofitFactory.flightsApi.getFlights(
                 flyFrom = "PRG",
-                to = "LGW",
-                dateFrom = "18/02/2019",
-                dateTo = "25/02/2019",
-                limit = 10
+                dateFrom = DateTimeFormatter.ofPattern("dd/MM/YYYY").format(LocalDate.now()),
+                dateTo = DateTimeFormatter.ofPattern("dd/MM/YYYY").format(LocalDate.now().plusDays(3)),
+                limit = 5
             ).await().let { response ->
                 if (response.isSuccessful && response.body() != null) {
                     fetchStatus.postValue(FetchStatus.SUCCESS)
-                    flights.postValue(response.body()!!.data.sortedBy { it.quality })
+                    flights.postValue(response.body()!!.data.sortedBy { it.departureTime })
                 } else {
                     fetchStatus.postValue(FetchStatus.FAILURE)
                     Log.e("FLIGHTS_ERROR", "${response.code()}: ${response.message()}")
