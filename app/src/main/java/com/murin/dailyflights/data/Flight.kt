@@ -29,8 +29,9 @@ data class Flight(
     val cityTo: String?,
     val countryTo: Country?,
     val duration: Duration?,
-    val price: Float?
-): Parcelable {
+    val price: Float?,
+    val route: List<Route>?
+) : Parcelable {
 
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -49,7 +50,12 @@ data class Flight(
         parcel.readString(),
         parcel.readParcelable(Country::class.java.classLoader),
         parcel.readParcelable(Duration::class.java.classLoader),
-        parcel.readValue(Float::class.java.classLoader) as? Float
+        parcel.readValue(Float::class.java.classLoader) as? Float,
+        parcel.createTypedArrayList(Route)
+    )
+
+    fun timeString(time: Long): String = DateTimeFormatter.ofPattern("dd.MM.YYYY, HH:mm").format(
+        LocalDateTime.ofEpochSecond(time, 0, ZoneOffset.UTC)
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -70,6 +76,7 @@ data class Flight(
         parcel.writeParcelable(countryTo, flags)
         parcel.writeParcelable(duration, flags)
         parcel.writeValue(price)
+        parcel.writeTypedList(route)
     }
 
     override fun describeContents(): Int {
@@ -86,10 +93,6 @@ data class Flight(
         }
     }
 
-    fun timeString(time: Long): String = DateTimeFormatter.ofPattern("dd.MM.YYYY, HH:mm").format(
-        LocalDateTime.ofEpochSecond(time, 0, ZoneOffset.UTC)
-    )
-
     data class Duration(
         val total: Int,
         val `return`: Int,
@@ -102,9 +105,11 @@ data class Flight(
         )
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
-            parcel.writeInt(total)
-            parcel.writeInt(`return`)
-            parcel.writeInt(departure)
+            with(parcel) {
+                writeInt(total)
+                writeInt(`return`)
+                writeInt(departure)
+            }
         }
 
         override fun describeContents(): Int {
@@ -150,5 +155,42 @@ data class Flight(
             }
         }
 
+    }
+
+    data class Route(
+        val latFrom: Float,
+        val lngFrom: Float,
+        val latTo: Float,
+        val lngTo: Float
+    ): Parcelable {
+        constructor(parcel: Parcel) : this(
+            parcel.readFloat(),
+            parcel.readFloat(),
+            parcel.readFloat(),
+            parcel.readFloat()
+        )
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            with(parcel) {
+                writeFloat(latFrom)
+                writeFloat(lngFrom)
+                writeFloat(latTo)
+                writeFloat(lngTo)
+            }
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<Route> {
+            override fun createFromParcel(parcel: Parcel): Route {
+                return Route(parcel)
+            }
+
+            override fun newArray(size: Int): Array<Route?> {
+                return arrayOfNulls(size)
+            }
+        }
     }
 }

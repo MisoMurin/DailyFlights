@@ -133,6 +133,18 @@
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/tv_flight_duration"/>
 
+        <com.mapbox.mapboxsdk.maps.MapView
+            android:id="@+id/mv_flight_map"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:mapbox_cameraTargetLat="49.234374"
+            app:mapbox_cameraTargetLng="16.567946"
+            app:mapbox_styleUrl="mapbox://styles/mapbox/streets-v11"
+            app:mapbox_cameraZoom="7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_flight_duration"
+            app:layout_constraintBottom_toTopOf="@id/ll_show_in_kiwi"/>
+
         <LinearLayout
             android:id="@+id/ll_show_in_kiwi"
             android:layout_width="wrap_content"
@@ -143,7 +155,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_margin="8dp">
 
             <ImageView
                 android:id="@+id/iv_show_in_kiwi"

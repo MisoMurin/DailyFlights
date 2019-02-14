@@ -9,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.jakewharton.threetenabp.AndroidThreeTen
+import com.mapbox.mapboxsdk.Mapbox
 import com.murin.dailyflights.databinding.ActivityFlightsBinding
 
 class FlightsActivity : AppCompatActivity() {
@@ -24,6 +25,8 @@ class FlightsActivity : AppCompatActivity() {
             this,
             R.layout.activity_flights
         )
+
+        Mapbox.getInstance(this, mapboxToken)
 
         navController = Navigation.findNavController(this, R.id.flights_nav_fragment)
         appBarConfiguration = AppBarConfiguration(navController.graph, null)
