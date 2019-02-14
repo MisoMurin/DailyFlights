@@ -11,5 +11,25 @@
 		android:name="com.murin.dailyflights.ui.list.FlightsListFragment"
 		android:label="@string/flights_title"
 		tools:layout="@layout/fragment_flights_list">
+
+		<action
+			android:id="@+id/action_flights_fragment_to_flight_detail_fragment"
+			app:destination="@+id/flight_detail_fragment"
+			app:enterAnim="@anim/slide_in_right"
+			app:exitAnim="@anim/slide_out_left"
+			app:popEnterAnim="@anim/slide_in_left"
+			app:popExitAnim="@anim/slide_out_right"/>
 	</fragment>
+
+	<fragment
+		android:id="@+id/flight_detail_fragment"
+		android:name="com.murin.dailyflights.ui.detail.FlightDetailFragment"
+		android:label="@string/flight_detail_title">
+		<argument
+			android:name="flight"
+			app:argType="com.murin.dailyflights.data.Flight"
+			android:defaultValue="@null"
+            app:nullable="true"/>
+	</fragment>
+
 </navigation>

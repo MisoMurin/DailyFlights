@@ -3,6 +3,7 @@ package com.murin.dailyflights.ui.list
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.murin.dailyflights.data.Flight
@@ -13,7 +14,7 @@ class FlightsAdapter : ListAdapter<Flight, FlightsAdapter.ViewHolder>(FlightDiff
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val flight = getItem(position)
         holder.apply {
-            bind(createOnClickListener(flight.id, position), flight)
+            bind(createOnClickListener(flight), flight)
             itemView.tag = flight
         }
     }
@@ -26,15 +27,11 @@ class FlightsAdapter : ListAdapter<Flight, FlightsAdapter.ViewHolder>(FlightDiff
         ))
     }
 
-    private fun createOnClickListener(flightId: String, position: Int): View.OnClickListener {
+    private fun createOnClickListener(flight: Flight): View.OnClickListener {
         return View.OnClickListener {
-//            if (getItem(position).hasLandingLocation()) {
-//                val direction = MeteorsListFragmentDirections
-//                    .ActionMeteorsFragmentToMeteorLandingMapFragment().setMeteorId(meteorId)
-//                it.findNavController().navigate(direction)
-//            } else {
-//                Snackbar.make(it, R.string.no_landing_location, Snackbar.LENGTH_LONG).show()
-//            }
+            val direction = FlightsListFragmentDirections
+                .actionFlightsFragmentToFlightDetailFragment().setFlight(flight)
+            it.findNavController().navigate(direction)
         }
     }
 
