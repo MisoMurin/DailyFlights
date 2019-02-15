@@ -21,20 +21,6 @@
         android:animateLayoutChanges="true">
 
         <TextView
-            android:id="@+id/tv_flight_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@{`Let's visit ` + flight.countryTo.name}"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Flight to a country"/>
-
-        <TextView
             android:id="@+id/tv_flight_from"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -45,7 +31,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_flight_title"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Flight destination"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintEnd_toStartOf="@+id/tv_flight_to"/>
@@ -133,15 +119,82 @@
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/tv_flight_duration"/>
 
+        <TextView
+            android:id="@+id/tv_flight_baggage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/flight_baggage"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@android:color/black"
+            android:drawableStart="@drawable/ic_personal_item"
+            android:drawablePadding="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_flight_duration"/>
+
+        <TextView
+            android:id="@+id/tv_flight_personal_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text='@{"Personal item: " + flight.baggage.personalItem.price + " EUR (" + flight.baggage.personalItem.weight + " kg)"}'
+            android:visibility="@{flight.baggage.personalItem.price == null ? View.GONE : View.VISIBLE}"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_flight_baggage"
+            tools:text="Personal item"/>
+
+        <TextView
+            android:id="@+id/tv_flight_cabin_baggage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text='@{"Cabin baggage: " + flight.baggage.hand.price + " EUR (" + flight.baggage.hand.weight + " kg)"}'
+            android:visibility="@{flight.baggage.hand.price == null ? View.GONE : View.VISIBLE}"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_flight_personal_item"
+            tools:text="Cabin baggage"/>
+
+        <TextView
+            android:id="@+id/tv_flight_check_baggage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_flight_cabin_baggage"
+            tools:text="Checked baggage"/>
+
+        <com.mapbox.mapboxsdk.maps.MapView
+            android:id="@+id/mv_flight_map"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:mapbox_cameraTargetLat="49.234374"
+            app:mapbox_cameraTargetLng="16.567946"
+            app:mapbox_styleUrl="mapbox://styles/mapbox/streets-v11"
+            app:mapbox_cameraZoom="7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_flight_check_baggage"
+            app:layout_constraintBottom_toTopOf="@id/ll_show_in_kiwi"/>
+
         <LinearLayout
             android:id="@+id/ll_show_in_kiwi"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="gone"
             android:foreground="?attr/selectableItemBackground"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_flight_duration"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:gravity="center"
             android:onClick="@{kiwiClickListener}">
 
@@ -150,9 +203,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/show_in_kiwi"
-                android:padding="4dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_flight_duration"/>
+                android:padding="4dp"/>
 
             <TextView
                 android:id="@+id/tv_show_in_kiwi"
@@ -164,18 +215,6 @@
                 android:text="@string/show_in_kiwi"/>
 
         </LinearLayout>
-
-        <com.mapbox.mapboxsdk.maps.MapView
-            android:id="@+id/mv_flight_map"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:mapbox_cameraTargetLat="49.234374"
-            app:mapbox_cameraTargetLng="16.567946"
-            app:mapbox_styleUrl="mapbox://styles/mapbox/streets-v11"
-            app:mapbox_cameraZoom="7"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_show_in_kiwi"
-            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

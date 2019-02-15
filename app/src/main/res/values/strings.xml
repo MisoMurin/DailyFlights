@@ -6,4 +6,8 @@
     <string name="offline">App is offline - can\'t fetch.</string>
     <string name="unknown_state">Unknown state</string>
     <string name="show_in_kiwi">Kiwi.com</string>
+    <string name="flight_baggage">Flight baggage</string>
+    <string name="personal_item">Personal item</string>
+    <string name="cabin_baggage">Cabin baggage</string>
+    <string name="checked_baggage">Checked baggage: from %1$s EUR (%2$s kg)</string>
 </resources>

@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -41,6 +42,21 @@ class FlightDetailFragment : Fragment() {
                 if (pm.getInstalledPackages(0).any { it.packageName == kiwiPackageName }) {
                     ivShowInKiwi.setImageDrawable(pm.getApplicationIcon(kiwiPackageName))
                     llShowInKiwi.visibility = VISIBLE
+                }
+            }
+
+            tvFlightBaggage.visibility = flight?.baggage?.let {
+                if (it.personalItem != null || it.hand != null || !it.hold.isNullOrEmpty()) VISIBLE else GONE
+            } ?: GONE
+
+            flight?.baggage?.hold?.let {
+                tvFlightCheckBaggage.visibility = if (it.isEmpty()) GONE else VISIBLE
+                it.minBy { item -> item.price ?: 0f }?.let { minBaggage ->
+                    tvFlightCheckBaggage.text = String.format(
+                        getString(R.string.checked_baggage),
+                        minBaggage.price,
+                        minBaggage.weight
+                    )
                 }
             }
 
