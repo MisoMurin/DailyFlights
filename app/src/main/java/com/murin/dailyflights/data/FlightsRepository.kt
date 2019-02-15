@@ -2,22 +2,23 @@ package com.murin.dailyflights.data
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.murin.dailyflights.data.network.RetrofitFactory
+import com.murin.dailyflights.data.network.FlightsApi
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 
 class FlightsRepository private constructor() {
     val flights = MutableLiveData<List<Flight>>()
     val fetchStatus = MutableLiveData<FetchStatus>()
+    private lateinit var flightsApi: FlightsApi
 
     suspend fun fetchFlightsFromApi() =
         try {
             fetchStatus.postValue(FetchStatus.FETCHING)
 
-            RetrofitFactory.flightsApi.getFlights(
-                flyFrom = "PRG",
+            flightsApi.getFlights(
+                flyFrom = "49.2-16.43-250km",
                 dateFrom = DateTimeFormatter.ofPattern("dd/MM/YYYY").format(LocalDate.now()),
-                dateTo = DateTimeFormatter.ofPattern("dd/MM/YYYY").format(LocalDate.now().plusDays(3)),
+                dateTo = DateTimeFormatter.ofPattern("dd/MM/YYYY").format(LocalDate.now().plusDays(1)),
                 limit = 5
             ).await().let { response ->
                 if (response.isSuccessful && response.body() != null) {
@@ -37,9 +38,12 @@ class FlightsRepository private constructor() {
     companion object {
         @Volatile private var instance: FlightsRepository? = null
 
-        fun getInstance() =
+        fun getInstance(flightsApi: FlightsApi) =
             instance ?: synchronized(this) {
-                instance ?: FlightsRepository().also { instance = it }
+                instance ?: FlightsRepository().also {
+                    instance = it
+                    (instance as FlightsRepository).flightsApi = flightsApi
+                }
             }
     }
 

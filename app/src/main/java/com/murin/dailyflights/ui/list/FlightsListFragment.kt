@@ -6,18 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import com.google.android.material.snackbar.Snackbar
-import com.murin.dailyflights.Provider
 import com.murin.dailyflights.R
 import com.murin.dailyflights.data.FlightsRepository.FetchStatus.*
 import com.murin.dailyflights.databinding.FragmentFlightsListBinding
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FlightsListFragment : Fragment() {
-
-    private lateinit var viewModel: FlightsListViewModel
+    private val viewModel: FlightsListViewModel by viewModel()
+    private val adapter: FlightsAdapter by inject()
     private lateinit var binding: FragmentFlightsListBinding
 
     override fun onCreateView(
@@ -27,18 +25,14 @@ class FlightsListFragment : Fragment() {
     ): View? {
         binding = FragmentFlightsListBinding.inflate(inflater, container, false)
 
-        val factory = Provider.provideFlightsListViewModelFactory()
-        viewModel = ViewModelProviders.of(this, factory).get(FlightsListViewModel::class.java)
-
-        val adapter = FlightsAdapter()
         binding.rvFlightsList.adapter = adapter
-        subscribeUi(adapter)
+        subscribeUi()
 
         setHasOptionsMenu(true)
         return binding.root
     }
 
-    private fun subscribeUi(adapter: FlightsAdapter) {
+    private fun subscribeUi() {
         viewModel.flights.observe(viewLifecycleOwner, Observer { fights ->
             val flightsCount = fights?.size ?: 0
             if (flightsCount > 0) {

@@ -26,8 +26,6 @@ class FlightsActivity : AppCompatActivity() {
             R.layout.activity_flights
         )
 
-        Mapbox.getInstance(this, mapboxToken)
-
         navController = Navigation.findNavController(this, R.id.flights_nav_fragment)
         appBarConfiguration = AppBarConfiguration(navController.graph, null)
 
