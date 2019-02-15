@@ -2,6 +2,7 @@ package com.murin.dailyflights.data
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.murin.dailyflights.data.model.Flight
 import com.murin.dailyflights.data.network.FlightsApi
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter

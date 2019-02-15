@@ -12,7 +12,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="flight"
-            type="com.murin.dailyflights.data.Flight"/>
+            type="com.murin.dailyflights.data.model.Flight"/>
     </data>
 
     <androidx.cardview.widget.CardView

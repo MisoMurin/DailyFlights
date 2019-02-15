@@ -1,4 +1,4 @@
-package com.murin.dailyflights.data
+package com.murin.dailyflights.data.model
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -30,7 +30,8 @@ data class Flight(
     val countryTo: Country?,
     val duration: Duration?,
     val price: Float?,
-    val route: List<Route>?
+    val route: List<Route>?,
+    val baggage: Baggage?
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -51,7 +52,8 @@ data class Flight(
         parcel.readParcelable(Country::class.java.classLoader),
         parcel.readParcelable(Duration::class.java.classLoader),
         parcel.readValue(Float::class.java.classLoader) as? Float,
-        parcel.createTypedArrayList(Route)
+        parcel.createTypedArrayList(Route),
+        parcel.readParcelable(Baggage::class.java.classLoader)
     )
 
     fun timeString(time: Long): String = DateTimeFormatter.ofPattern("dd.MM.YYYY, HH:mm").format(
@@ -77,6 +79,7 @@ data class Flight(
         parcel.writeParcelable(duration, flags)
         parcel.writeValue(price)
         parcel.writeTypedList(route)
+        parcel.writeParcelable(baggage, flags)
     }
 
     override fun describeContents(): Int {
@@ -93,104 +96,4 @@ data class Flight(
         }
     }
 
-    data class Duration(
-        val total: Int,
-        val `return`: Int,
-        val departure: Int
-    ): Parcelable {
-        constructor(parcel: Parcel) : this(
-            parcel.readInt(),
-            parcel.readInt(),
-            parcel.readInt()
-        )
-
-        override fun writeToParcel(parcel: Parcel, flags: Int) {
-            with(parcel) {
-                writeInt(total)
-                writeInt(`return`)
-                writeInt(departure)
-            }
-        }
-
-        override fun describeContents(): Int {
-            return 0
-        }
-
-        companion object CREATOR : Parcelable.Creator<Duration> {
-            override fun createFromParcel(parcel: Parcel): Duration {
-                return Duration(parcel)
-            }
-
-            override fun newArray(size: Int): Array<Duration?> {
-                return arrayOfNulls(size)
-            }
-        }
-    }
-
-    data class Country(
-        val code: String,
-        val name: String
-    ): Parcelable {
-        constructor(parcel: Parcel) : this(
-            parcel.readString() ?: "",
-            parcel.readString() ?: ""
-        )
-
-        override fun writeToParcel(parcel: Parcel, flags: Int) {
-            parcel.writeString(code)
-            parcel.writeString(name)
-        }
-
-        override fun describeContents(): Int {
-            return 0
-        }
-
-        companion object CREATOR : Parcelable.Creator<Country> {
-            override fun createFromParcel(parcel: Parcel): Country {
-                return Country(parcel)
-            }
-
-            override fun newArray(size: Int): Array<Country?> {
-                return arrayOfNulls(size)
-            }
-        }
-
-    }
-
-    data class Route(
-        val latFrom: Float,
-        val lngFrom: Float,
-        val latTo: Float,
-        val lngTo: Float
-    ): Parcelable {
-        constructor(parcel: Parcel) : this(
-            parcel.readFloat(),
-            parcel.readFloat(),
-            parcel.readFloat(),
-            parcel.readFloat()
-        )
-
-        override fun writeToParcel(parcel: Parcel, flags: Int) {
-            with(parcel) {
-                writeFloat(latFrom)
-                writeFloat(lngFrom)
-                writeFloat(latTo)
-                writeFloat(lngTo)
-            }
-        }
-
-        override fun describeContents(): Int {
-            return 0
-        }
-
-        companion object CREATOR : Parcelable.Creator<Route> {
-            override fun createFromParcel(parcel: Parcel): Route {
-                return Route(parcel)
-            }
-
-            override fun newArray(size: Int): Array<Route?> {
-                return arrayOfNulls(size)
-            }
-        }
-    }
 }

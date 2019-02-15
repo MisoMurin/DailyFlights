@@ -27,7 +27,7 @@
 		android:label="@string/flight_detail_title">
 		<argument
 			android:name="flight"
-			app:argType="com.murin.dailyflights.data.Flight"
+			app:argType="com.murin.dailyflights.data.model.Flight"
 			android:defaultValue="@null"
             app:nullable="true"/>
 	</fragment>

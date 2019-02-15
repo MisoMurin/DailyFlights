@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.murin.dailyflights.data.Flight
+import com.murin.dailyflights.data.model.Flight
 import com.murin.dailyflights.databinding.ItemFlightBinding
 
 class FlightsAdapter : ListAdapter<Flight, FlightsAdapter.ViewHolder>(FlightDiffCallback()) {

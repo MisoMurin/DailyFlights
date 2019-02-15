@@ -1,7 +1,7 @@
 package com.murin.dailyflights.ui.list
 
 import androidx.recyclerview.widget.DiffUtil
-import com.murin.dailyflights.data.Flight
+import com.murin.dailyflights.data.model.Flight
 
 class FlightDiffCallback: DiffUtil.ItemCallback<Flight>() {
 
